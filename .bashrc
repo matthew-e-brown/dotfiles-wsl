@@ -5,8 +5,10 @@
 # Alias for dotfiles git repo
 alias dots='$(which git) --git-dir=$HOME/.dots/ --work-tree=$HOME'
 
+alias python='python3'
+
 # Make shit legible
-PROMPT_DIRTRIM=4
+PROMPT_DIRTRIM=2
 
 # Source cargo
 . "$HOME/.cargo/env"
@@ -73,20 +75,27 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}[\[\033[01;32m\]\u@\h \[\033[01;34m\]\w\[\033[00m\]]$ '
+    __PROMPT_BEFORE_GIT='${debian_chroot:+($debian_chroot)}'"[\[$(tput setaf 10)\]\u@\h \[$(tput setaf 6)\]\w\[$(tput sgr0)\]]\[$(tput setaf 8)\]"
+    __PROMPT_AFTER_GIT=" \[$(tput sgr0)\]$ "
 else
-    PS1='${debian_chroot:+($debian_chroot)}[\u@\h \w]$ '
+    __PROMPT_BEFORE_GIT='${debian_chroot:+($debian_chroot)}[\u@\h \w]'
+    __PROMPT_AFTER_GIT=" $ "
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    __PROMPT_BEFORE_GIT="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$__PROMPT_BEFORE_GIT"
     ;;
 *)
     ;;
 esac
+
+# ---------
+# Actually set "PS1"
+# ---------
+PROMPT_COMMAND='__git_ps1 "$__PROMPT_BEFORE_GIT" "$__PROMPT_AFTER_GIT" " (%s)"'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -136,8 +145,3 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
