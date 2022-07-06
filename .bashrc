@@ -86,7 +86,7 @@ unset color_prompt force_color_prompt
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    __PROMPT_BEFORE_GIT="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$__PROMPT_BEFORE_GIT"
+    __PROMPT_BEFORE_GIT="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h:\W\a\]$__PROMPT_BEFORE_GIT"
     ;;
 *)
     ;;
@@ -145,3 +145,7 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
