@@ -8,26 +8,19 @@ declare -a paths=(
 )
 
 
-if [[ -z "$1" || ( "$1" != "sync" && "$1" != "bisync" ) ]]
+if [[ "$1" = "up" || "$1" = "down" ]]
 then
-	>&2 echo "$0 requires subcommand 'sync' or 'bisync'"
-	exit 1
-else
-	action="$1"
+	action="sync"
+	direction="$1"
 	shift
-fi
-
-
-if [[ "$action" = "sync" ]]
+elif [[ "$1" = "bisync" ]]
 then
-	if [[ "$1" = "up" || "$1" = "down" ]]
-	then
-		direction="$1"
-		shift
-	else
-		>&2 echo "'sync' subcommand requires direction, 'up' or 'down'"
-		exit 1
-	fi
+	action="bisync"
+	direction="down"
+	shift
+else
+	>&2 echo "Requires subcommand; 'up', 'down', or 'bisync'"
+	exit 1
 fi
 
 
@@ -45,6 +38,6 @@ do
 		dst="$local_path"
 	fi
 
-	# Path remaining options like --dry-run or --verbose to rclone
-	rclone $action "$src" "$dst" "$@"
+	# Pass remaining options like --dry-run or --verbose to rclone
+	rclone $action "$src" "$dst" "$@" || break
 done
