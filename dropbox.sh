@@ -4,7 +4,7 @@
 # Easiest just to hardcode them.
 declare -a paths=(
 	"Coursework/5th Year - 2022-2023/Winter/COIS-4350H High Performance Computing"
-	"Coursework/5th Year - 2022-2023/Winter/COIS-3320H Fundamentals of Operating Systems"
+	# "Coursework/5th Year - 2022-2023/Winter/COIS-3320H Fundamentals of Operating Systems"
 )
 
 
