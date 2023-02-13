@@ -2,9 +2,7 @@
 # My config here
 #
 
-# Alias for dotfiles git repo
 alias dots='$(which git) --git-dir=$HOME/.dots/ --work-tree=$HOME'
-
 alias python='python3'
 
 # Make shit legible
@@ -12,6 +10,9 @@ PROMPT_DIRTRIM=2
 
 # Source cargo
 . "$HOME/.cargo/env"
+
+# Add ~/bin to my path
+export PATH=~/bin/:"$PATH"
 
 #
 # ---------
